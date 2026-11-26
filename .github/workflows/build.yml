@@ -40,8 +40,16 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         run: |
           KS="$RUNNER_TEMP/upload-keystore.jks"
-          PW="$(printf '%s' "$KEYSTORE_PASSWORD" | tr -d ' \r\n\t')"
+          if printf '%s' "$KEYSTORE_PASSWORD" | grep -q "Store password:"; then
+            # The whole SIGNING-SECRETS.txt was pasted; pick out the password line.
+            PW="$(printf '%s\n' "$KEYSTORE_PASSWORD" | grep -m1 "Store password:" | sed 's/.*Store password:[[:space:]]*//' | tr -d ' \r\n\t')"
+            echo "Note: KEYSTORE_PASSWORD contained the whole secrets file; using the 'Store password' line from it."
+          else
+            PW="$(printf '%s' "$KEYSTORE_PASSWORD" | tr -d ' \r\n\t')"
+          fi
+          echo "::add-mask::$PW"
           AL="$(printf '%s' "$KEY_ALIAS" | tr -d ' \r\n\t')"
+          [ "$AL" = "upload" ] || { echo "Note: KEY_ALIAS was not 'upload'; using 'upload'."; AL=upload; }
           echo "Keystore file: $(wc -c < "$KS") bytes, sha256 starts $(sha256sum "$KS" | cut -c1-16) (expected 0f7b2085a9ff534b)"
           echo "Password length: ${#PW} characters (expected 24)"
           if [ "$(sha256sum "$KS" | cut -c1-16)" != "0f7b2085a9ff534b" ]; then
@@ -54,6 +62,9 @@ jobs:
             echo "::error::KEY_ALIAS secret is wrong. It should be exactly: upload"; exit 1
           fi
           echo "Signing secrets look correct."
+          # Hand the cleaned values to the build step.
+          echo "KEYSTORE_PASSWORD=$PW" >> "$GITHUB_ENV"
+          echo "KEY_ALIAS=$AL" >> "$GITHUB_ENV"
 
       - name: Run unit tests
         run: ./gradlew --no-daemon test
@@ -61,9 +72,6 @@ jobs:
       - name: Build app bundle
         env:
           KEYSTORE_FILE: ${{ steps.key.outputs.signed == 'true' && format('{0}/upload-keystore.jks', runner.temp) || '' }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           VERSION_CODE: ${{ github.run_number }}
         run: ./gradlew --no-daemon bundleRelease
 

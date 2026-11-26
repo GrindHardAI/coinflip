@@ -30,7 +30,7 @@ android {
     signingConfigs {
         // CI (GitHub Actions) passes the key through environment variables;
         // local builds use keystore.properties.
-        val ciKeystore = System.getenv("KEYSTORE_FILE")
+        val ciKeystore = System.getenv("KEYSTORE_FILE")?.takeIf { it.isNotBlank() }
         if (ciKeystore != null) {
             create("release") {
                 storeFile = file(ciKeystore)

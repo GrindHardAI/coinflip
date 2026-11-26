@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -58,6 +61,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
+import android.widget.Toast
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -76,6 +80,9 @@ import com.coinflipper.app.data.AppSettings
 import com.coinflipper.app.data.FlipStats
 import com.coinflipper.app.data.LabelPreset
 import com.coinflipper.app.data.Side
+import com.coinflipper.app.monetization.BannerAd
+import com.coinflipper.app.monetization.Monetization
+import com.coinflipper.app.monetization.NoMonetization
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -96,9 +103,13 @@ fun sideLabel(side: Side, settings: AppSettings): String {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CoinFlipScreen(vm: CoinFlipViewModel = viewModel()) {
+fun CoinFlipScreen(vm: CoinFlipViewModel = viewModel(), monetization: Monetization = NoMonetization) {
     val stats by vm.stats.collectAsStateWithLifecycle()
     val settings by vm.settings.collectAsStateWithLifecycle()
+    val adsReady by monetization.adsReady.collectAsStateWithLifecycle()
+    val rewardedReady by monetization.rewardedReady.collectAsStateWithLifecycle()
+    val privacyOptionsRequired by monetization.privacyOptionsRequired.collectAsStateWithLifecycle()
+    val removeAdsPrice by monetization.removeAdsPrice.collectAsStateWithLifecycle()
     val metal = settings.skin.metal
     val headsLabel = sideLabel(Side.HEADS, settings)
     val tailsLabel = sideLabel(Side.TAILS, settings)
@@ -141,6 +152,9 @@ fun CoinFlipScreen(vm: CoinFlipViewModel = viewModel()) {
             haptics.performHapticFeedback(HapticFeedbackType.LongPress)
             vm.record(result)
             flipping = false
+            // Give the player a moment to see the result before any full-screen ad.
+            kotlinx.coroutines.delay(900)
+            monetization.onFlipCompleted(adsRemoved = settings.adsRemoved)
         }
     }
 
@@ -166,6 +180,11 @@ fun CoinFlipScreen(vm: CoinFlipViewModel = viewModel()) {
         ) {
             Scaffold(
                 containerColor = Color.Transparent,
+                bottomBar = {
+                    if (adsReady && !settings.adsRemoved) {
+                        BannerAd(Modifier.windowInsetsPadding(WindowInsets.navigationBars))
+                    }
+                },
                 topBar = {
                     CenterAlignedTopAppBar(
                         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -250,7 +269,25 @@ fun CoinFlipScreen(vm: CoinFlipViewModel = viewModel()) {
                 sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
                 containerColor = VaultColors.Surface,
             ) {
-                SettingsContent(settings = settings, onChange = vm::updateSettings)
+                val adNotReady = stringResource(R.string.ad_not_ready)
+                val purchaseUnavailable = stringResource(R.string.purchase_unavailable)
+                SettingsContent(
+                    settings = settings,
+                    onChange = vm::updateSettings,
+                    rewardedReady = rewardedReady,
+                    onUnlockSkin = { skin ->
+                        val shown = monetization.showRewarded { vm.unlockAndSelect(skin) }
+                        if (!shown) Toast.makeText(context, adNotReady, Toast.LENGTH_SHORT).show()
+                    },
+                    removeAdsPrice = removeAdsPrice,
+                    onRemoveAds = {
+                        if (!monetization.buyRemoveAds()) {
+                            Toast.makeText(context, purchaseUnavailable, Toast.LENGTH_SHORT).show()
+                        }
+                    },
+                    showPrivacyOptions = privacyOptionsRequired,
+                    onPrivacyOptions = monetization::showPrivacyOptions,
+                )
             }
         }
 

@@ -25,7 +25,7 @@ tap_ui() {
 }
 
 adb shell am force-stop $PKG
-adb shell am start -W -n $PKG/.MainActivity >/dev/null
+adb shell am start -W -n $PKG/.MainActivity --ez screenshot_mode true >/dev/null
 sleep 4
 shot 1-start
 

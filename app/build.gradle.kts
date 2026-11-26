@@ -12,6 +12,22 @@ val keystoreProps = Properties().apply {
     if (keystorePropsFile.exists()) keystorePropsFile.inputStream().use { load(it) }
 }
 
+// AdMob ad IDs. Debug builds ALWAYS use Google's official test IDs (never click real ads
+// while testing). Release builds use admob.properties at the project root when present,
+// otherwise the test IDs too (test ads earn nothing but are safe).
+val testAdmob = mapOf(
+    "APP_ID" to "ca-app-pub-3940256099942544~3347511713",
+    "BANNER_ID" to "ca-app-pub-3940256099942544/9214589741",
+    "INTERSTITIAL_ID" to "ca-app-pub-3940256099942544/1033173712",
+    "REWARDED_ID" to "ca-app-pub-3940256099942544/5224354917",
+)
+val admobPropsFile = rootProject.file("admob.properties")
+val admobProps = Properties().apply {
+    if (admobPropsFile.exists()) admobPropsFile.inputStream().use { load(it) }
+}
+fun releaseAdmob(key: String): String =
+    admobProps.getProperty(key)?.trim()?.takeIf { it.isNotEmpty() } ?: testAdmob.getValue(key)
+
 android {
     // IMPORTANT: change this to your own unique id before the first Play upload.
     // It can never be changed after publishing.
@@ -50,7 +66,17 @@ android {
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders["admobAppId"] = testAdmob.getValue("APP_ID")
+            buildConfigField("String", "ADMOB_BANNER_ID", "\"${testAdmob.getValue("BANNER_ID")}\"")
+            buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"${testAdmob.getValue("INTERSTITIAL_ID")}\"")
+            buildConfigField("String", "ADMOB_REWARDED_ID", "\"${testAdmob.getValue("REWARDED_ID")}\"")
+        }
         release {
+            manifestPlaceholders["admobAppId"] = releaseAdmob("APP_ID")
+            buildConfigField("String", "ADMOB_BANNER_ID", "\"${releaseAdmob("BANNER_ID")}\"")
+            buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"${releaseAdmob("INTERSTITIAL_ID")}\"")
+            buildConfigField("String", "ADMOB_REWARDED_ID", "\"${releaseAdmob("REWARDED_ID")}\"")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -67,6 +93,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -87,6 +114,10 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.icons.core)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    implementation(libs.play.services.ads)
+    implementation(libs.user.messaging.platform)
+    implementation(libs.billing)
 
     testImplementation(libs.junit)
 }

@@ -38,3 +38,14 @@ class FlipStatsTest {
         assertTrue("heads=$heads", heads in 49_000..51_000)
     }
 }
+
+class AppSettingsTest {
+    @Test
+    fun premiumSkinsLockedUntilUnlockedOrAdsRemoved() {
+        val s = AppSettings()
+        assertTrue(s.isLocked(CoinSkin.BRONZE))
+        assertTrue(!s.isLocked(CoinSkin.SILVER))
+        assertTrue(!s.copy(unlockedSkins = setOf(CoinSkin.BRONZE)).isLocked(CoinSkin.BRONZE))
+        assertTrue(!s.copy(adsRemoved = true).isLocked(CoinSkin.ROSE))
+    }
+}

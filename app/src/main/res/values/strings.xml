@@ -40,4 +40,15 @@
     <string name="shake_to_flip">Shake to flip</string>
     <string name="shake_to_flip_sub">Shake your phone to flip the coin</string>
     <string name="done">Done</string>
+    <string name="locked">Locked</string>
+    <string name="watch_to_unlock">▶ Watch to unlock</string>
+    <string name="unlock_with_ad">Unlock with ad</string>
+    <string name="ad_not_ready">The video isn\'t ready yet. Check your internet and try again in a moment.</string>
+    <string name="ads_section">Ads</string>
+    <string name="remove_ads">Remove ads</string>
+    <string name="remove_ads_sub">One-time purchase. Also unlocks every coin.</string>
+    <string name="not_available">Soon</string>
+    <string name="purchase_unavailable">Purchases aren\'t available right now. Please try again later.</string>
+    <string name="ads_removed_thanks">Ads removed. Thank you for your support!</string>
+    <string name="privacy_options">Privacy &amp; ad choices</string>
 </resources>

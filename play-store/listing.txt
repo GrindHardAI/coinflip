@@ -18,8 +18,10 @@ FEATURES
 • Light and dark mode, with colors that match your phone (Android 12+)
 • Reset your stats anytime
 
-PRIVATE BY DESIGN
-No ads. No accounts. No internet access. Your stats stay on your phone.
+PICK YOUR COIN
+Choose gold, silver, bronze or rose gold, and change the sides to Yes/No or your own words.
+
+No account needed. Your stats stay on your phone. Optional one-time purchase removes ads.
 
 Great for settling arguments, picking who goes first, making decisions, or just testing your luck.
 
@@ -35,11 +37,30 @@ grindhardbusiness01@gmail.com
 PRIVACY POLICY URL
 https://grindhardai.github.io/coinflip/privacy.html
 
----- APP CONTENT ANSWERS ----
-Ads: No
-Data safety: Does your app collect or share any of the required user data types? -> No
-  (Data is encrypted in transit / deletion request questions are skipped when nothing is collected)
-Content rating questionnaire: category "All other app types"; answer No to every content question -> rated Everyone / PEGI 3
-Target audience: 13+ (avoid selecting under-13 age groups unless you want Families policy review)
-App access: All functionality is available without special access
+---- APP CONTENT ANSWERS (Play Console > Policy > App content) ----
+Ads: YES, my app contains ads.
+
+Data safety (because of Google AdMob; Google Play Billing data is handled by Google Play itself):
+  Does your app collect or share any of the required user data types? -> YES
+  Is all of the user data collected by your app encrypted in transit? -> YES
+  Do you provide a way for users to request that their data is deleted? -> NO (the developer stores no user data on servers;
+     users can reset their advertising ID in Android settings)
+  Data types to tick, each: Collected = Yes, Shared = Yes, Processed ephemerally = No,
+  Required (users can't turn off) = Yes, Purposes = Advertising or marketing, Analytics, Fraud prevention/security:
+    - Location > Approximate location
+    - App activity > App interactions
+    - App info and performance > Crash logs, Diagnostics
+    - Device or other IDs > Device or other IDs
+
+Content rating questionnaire: category "All other app types"; answer No to every content question,
+  but YES to "Does the app contain ads?" if asked. Result: Everyone / PEGI 3.
+  Also answer: "Does the app allow users to purchase digital goods?" -> YES.
+Target audience: 13+ (do NOT select under-13 age groups; the ads are not set up for children).
+App access: All functionality is available without special access.
 Government app: No   Financial features: None   Health: No   News app: No
+
+---- IN-APP PRODUCT (Play Console > Monetize with Play > Products > One-time products) ----
+Product ID: remove_ads   (must match exactly)
+Name: Remove ads
+Description: Removes all ads and unlocks every coin.
+Price: your choice (e.g. 1.99 USD)

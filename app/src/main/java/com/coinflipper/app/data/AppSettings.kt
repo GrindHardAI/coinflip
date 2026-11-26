@@ -14,9 +14,17 @@ data class AppSettings(
     val customTails: String = "",
     val sound: Boolean = true,
     val shake: Boolean = true,
+    /** Premium skins unlocked by watching a rewarded ad. */
+    val unlockedSkins: Set<CoinSkin> = emptySet(),
+    /** Cached result of the "Remove ads" purchase (Google Play is the source of truth). */
+    val adsRemoved: Boolean = false,
 ) {
+    fun isLocked(skin: CoinSkin): Boolean =
+        skin in PREMIUM_SKINS && !adsRemoved && skin !in unlockedSkins
+
     companion object {
         const val MAX_LABEL_LENGTH = 14
+        val PREMIUM_SKINS = setOf(CoinSkin.BRONZE, CoinSkin.ROSE)
     }
 }
 
@@ -31,6 +39,9 @@ class SettingsRepository(context: Context) {
         customTails = prefs.getString(KEY_CUSTOM_TAILS, "").orEmpty(),
         sound = prefs.getBoolean(KEY_SOUND, true),
         shake = prefs.getBoolean(KEY_SHAKE, true),
+        unlockedSkins = prefs.getString(KEY_UNLOCKED, "").orEmpty().split(',')
+            .mapNotNull { n -> CoinSkin.entries.firstOrNull { it.name == n } }.toSet(),
+        adsRemoved = prefs.getBoolean(KEY_ADS_REMOVED, false),
     )
 
     fun save(s: AppSettings) = prefs.edit {
@@ -40,6 +51,8 @@ class SettingsRepository(context: Context) {
         putString(KEY_CUSTOM_TAILS, s.customTails)
         putBoolean(KEY_SOUND, s.sound)
         putBoolean(KEY_SHAKE, s.shake)
+        putString(KEY_UNLOCKED, s.unlockedSkins.joinToString(",") { it.name })
+        putBoolean(KEY_ADS_REMOVED, s.adsRemoved)
     }
 
     private inline fun <reified E : Enum<E>> enumOrDefault(name: String?, default: E): E =
@@ -52,5 +65,7 @@ class SettingsRepository(context: Context) {
         const val KEY_CUSTOM_TAILS = "custom_tails"
         const val KEY_SOUND = "sound"
         const val KEY_SHAKE = "shake"
+        const val KEY_UNLOCKED = "unlocked_skins"
+        const val KEY_ADS_REMOVED = "ads_removed"
     }
 }

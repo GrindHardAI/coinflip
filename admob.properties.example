@@ -1,0 +1,6 @@
+# Copy to admob.properties (safe to commit: these IDs are public inside the app anyway)
+# and paste your own IDs from https://admob.google.com. Used for RELEASE builds only.
+APP_ID=ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX
+BANNER_ID=ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX
+INTERSTITIAL_ID=ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX
+REWARDED_ID=ca-app-pub-XXXXXXXXXXXXXXXX/XXXXXXXXXX

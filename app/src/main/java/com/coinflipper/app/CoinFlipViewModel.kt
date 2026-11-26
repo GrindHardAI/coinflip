@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.coinflipper.app.data.AppSettings
 import com.coinflipper.app.data.Coin
+import com.coinflipper.app.data.CoinSkin
 import com.coinflipper.app.data.FlipStats
 import com.coinflipper.app.data.SettingsRepository
 import com.coinflipper.app.data.Side
@@ -37,6 +38,11 @@ class CoinFlipViewModel(app: Application) : AndroidViewModel(app) {
         _stats.value = FlipStats()
         statsRepo.save(_stats.value)
     }
+
+    fun setAdsRemoved(removed: Boolean) = updateSettings { it.copy(adsRemoved = removed) }
+
+    fun unlockAndSelect(skin: CoinSkin) =
+        updateSettings { it.copy(unlockedSkins = it.unlockedSkins + skin, skin = skin) }
 
     fun updateSettings(change: (AppSettings) -> AppSettings) {
         _settings.update(change)

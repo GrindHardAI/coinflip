@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.coinflipper.app.data.Side
 
 /**
- * A realistic coin that can be rotated around its vertical axis.
+ * A realistic coin that tumbles end over end (around its horizontal axis), like a real toss.
  *
  * @param angle rotation in degrees. 0 (mod 360) shows heads, 180 shows tails.
  * @param toss  0..1 progress through the toss; drives the height and scale arc.
@@ -47,7 +47,7 @@ fun CoinView(
             modifier = Modifier
                 .fillMaxSize()
                 .graphicsLayer {
-                    rotationY = angle
+                    rotationX = angle
                     cameraDistance = 14f * density
                     translationY = -arc * tossHeight.toPx()
                     val s = 1f + 0.2f * arc
@@ -59,10 +59,10 @@ fun CoinView(
                 side = if (showingTails) Side.TAILS else Side.HEADS,
                 metal = metal,
                 label = if (showingTails) tailsLabel else headsLabel,
-                // The back face is seen mirrored; flip it back so the design reads correctly.
+                // The back face is seen upside down; flip it back so the design reads correctly.
                 modifier = Modifier
                     .fillMaxSize()
-                    .graphicsLayer { if (showingTails) rotationY = 180f },
+                    .graphicsLayer { if (showingTails) rotationX = 180f },
             )
         }
     }

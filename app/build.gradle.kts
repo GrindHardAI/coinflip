@@ -34,9 +34,10 @@ android {
         if (ciKeystore != null) {
             create("release") {
                 storeFile = file(ciKeystore)
-                storePassword = System.getenv("KEYSTORE_PASSWORD")
-                keyAlias = System.getenv("KEY_ALIAS")
-                keyPassword = System.getenv("KEY_PASSWORD")
+                storePassword = System.getenv("KEYSTORE_PASSWORD")?.trim()
+                keyAlias = System.getenv("KEY_ALIAS")?.trim()
+                // PKCS12 keys share the store password; fall back to it if KEY_PASSWORD is off.
+                keyPassword = System.getenv("KEYSTORE_PASSWORD")?.trim()
             }
         } else if (keystorePropsFile.exists()) {
             create("release") {

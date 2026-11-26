@@ -27,8 +27,32 @@ jobs:
             echo "::warning::Signing secrets not set yet - building an UNSIGNED bundle (compile check only)."
             echo "signed=false" >> "$GITHUB_OUTPUT"
           else
-            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/upload-keystore.jks"
+            # Strip any spaces/newlines that sneak in when pasting.
+            printf '%s' "$KEYSTORE_BASE64" | tr -d ' \r\n\t' | base64 -d > "$RUNNER_TEMP/upload-keystore.jks" \
+              || { echo "::error::KEYSTORE_BASE64 is not valid. Re-paste the whole of upload-keystore.base64.txt."; exit 1; }
             echo "signed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Check signing secrets
+        if: steps.key.outputs.signed == 'true'
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        run: |
+          KS="$RUNNER_TEMP/upload-keystore.jks"
+          PW="$(printf '%s' "$KEYSTORE_PASSWORD" | tr -d ' \r\n\t')"
+          AL="$(printf '%s' "$KEY_ALIAS" | tr -d ' \r\n\t')"
+          echo "Keystore file: $(wc -c < "$KS") bytes, sha256 starts $(sha256sum "$KS" | cut -c1-16) (expected 0f7b2085a9ff534b)"
+          echo "Password length: ${#PW} characters (expected 24)"
+          if [ "$(sha256sum "$KS" | cut -c1-16)" != "0f7b2085a9ff534b" ]; then
+            echo "::error::KEYSTORE_BASE64 secret is wrong or incomplete. Re-paste ALL of upload-keystore.base64.txt."; exit 1
+          fi
+          if ! keytool -list -keystore "$KS" -storepass "$PW" >/dev/null 2>&1; then
+            echo "::error::KEYSTORE_PASSWORD secret is wrong. Paste only the 24-character password from SIGNING-SECRETS.txt."; exit 1
+          fi
+          if ! keytool -list -keystore "$KS" -storepass "$PW" -alias "$AL" >/dev/null 2>&1; then
+            echo "::error::KEY_ALIAS secret is wrong. It should be exactly: upload"; exit 1
+          fi
+          echo "Signing secrets look correct."
           fi
 
       - name: Run unit tests

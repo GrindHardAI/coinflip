@@ -31,6 +31,7 @@ jobs:
             printf '%s' "$KEYSTORE_BASE64" | tr -d ' \r\n\t' | base64 -d > "$RUNNER_TEMP/upload-keystore.jks" \
               || { echo "::error::KEYSTORE_BASE64 is not valid. Re-paste the whole of upload-keystore.base64.txt."; exit 1; }
             echo "signed=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Check signing secrets
         if: steps.key.outputs.signed == 'true'

@@ -28,7 +28,8 @@ The steps below need your own logins, payment or phone, so you have to do them.
 1. Sign up at https://play.google.com/console. It costs a one-time $25, and Google
    verifies your ID and phone number.
 2. **Create app**: name *Coin Flip*, App, Free.
-3. **App content**: copy the answers from `play-store/listing.txt`.
+3. **App content**: copy the answers from `play-store/listing.txt`. The app now has
+   ads and a purchase, so answer "Yes, contains ads" and use the Data safety answers listed there.
 4. **Main store listing**: paste the text, then upload `play-store/icon-512.png`,
    `play-store/feature-graphic-1024x500.png`, and **at least 2 phone screenshots**.
    For screenshots, install the app on your phone (see step 5) and take them there.
@@ -38,6 +39,29 @@ The steps below need your own logins, payment or phone, so you have to do them.
    production access unlocks.
 6. After the test period: **Production → Create release** → upload the latest
    `.aab` → submit for review. Reviews usually take a few days.
+
+## 3. Ads (AdMob): turn test ads into real money
+The app shows Google **test ads** until you finish these steps. Test ads are safe and earn nothing.
+1. Sign up at https://admob.google.com with your Google account and fill in your
+   payment details (the payments profile).
+2. **Apps → Add app → Android**. If the app isn't on Play yet, choose "No" and name it
+   *Coin Flip*. Copy the **App ID** (it looks like `ca-app-pub-123…~456…`).
+3. In that app, go to **Ad units → Add ad unit** and create three:
+   **Banner**, **Interstitial**, and **Rewarded**. Copy each **Ad unit ID** (`ca-app-pub-123…/789…`).
+4. Send those 4 IDs to Claude, who will put them in `admob.properties`.
+   Your next GitHub build then shows real ads.
+5. Never tap your own real ads; Google can close your account for it.
+   Debug builds always use test ads, so testing is safe.
+6. AdMob will ask for an `app-ads.txt` file on your developer website. Claude can host
+   it on GitHub Pages for you; just ask.
+
+## 4. "Remove ads" purchase
+1. In Play Console, go to **Setup → Payments profile** and create a merchant account
+   (needed for selling anything).
+2. Upload at least one build to a testing track. Purchases can only be set up after that.
+3. **Monetize with Play → Products → One-time products → Create**.
+   Product ID: `remove_ads` (exactly). Name: Remove ads. Price: for example $1.99. Activate it.
+4. The app's "Soon" button turns into the price automatically.
 
 ## Updating the app later
 Push to `main` and GitHub builds a new `.aab` with a higher version number

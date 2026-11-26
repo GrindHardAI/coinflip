@@ -40,4 +40,14 @@ tap_ui "silver"; sleep 1
 adb shell input keyevent KEYCODE_BACK; sleep 2
 tap_ui "flip"; sleep 3
 shot 5-silver-coin
-ls -la "$OUT"
+
+# Extra check (not for the store): start normally so Google TEST ads load.
+mkdir -p "$OUT/previews"
+adb shell am force-stop $PKG
+adb shell am start -W -n $PKG/.MainActivity >/dev/null
+sleep 20
+adb exec-out screencap -p > "$OUT/previews/ads-banner.png"
+tap_ui "settings" 1000 140; sleep 4
+adb exec-out screencap -p > "$OUT/previews/ads-settings.png"
+adb shell input keyevent KEYCODE_BACK
+ls -la "$OUT" "$OUT/previews"

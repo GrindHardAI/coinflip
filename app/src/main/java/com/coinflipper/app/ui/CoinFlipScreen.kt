@@ -120,7 +120,7 @@ fun CoinFlipScreen(vm: CoinFlipViewModel = viewModel()) {
                 .padding(horizontal = 20.dp, vertical = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Spacer(Modifier.height(200.dp)) // headroom for the toss arc
+            Spacer(Modifier.height(96.dp)) // headroom for the toss arc
 
             val faceName = stringResource(if (stats.last == Side.TAILS) R.string.tails else R.string.heads)
             val coinDescription = stringResource(R.string.coin_description, faceName)
@@ -128,7 +128,7 @@ fun CoinFlipScreen(vm: CoinFlipViewModel = viewModel()) {
                 angle = rotation.value,
                 toss = toss.value,
                 modifier = Modifier
-                    .size(200.dp)
+                    .size(184.dp)
                     .semantics { contentDescription = coinDescription }
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },

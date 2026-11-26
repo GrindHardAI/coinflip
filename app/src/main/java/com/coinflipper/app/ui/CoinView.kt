@@ -40,7 +40,7 @@ fun CoinView(
     angle: Float,
     toss: Float,
     modifier: Modifier = Modifier,
-    tossHeight: Dp = 220.dp,
+    tossHeight: Dp = 88.dp,
 ) {
     val normalized = ((angle % 360f) + 360f) % 360f
     val showingTails = normalized > 90f && normalized < 270f

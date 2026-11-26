@@ -73,10 +73,17 @@ jobs:
         env:
           KEYSTORE_FILE: ${{ steps.key.outputs.signed == 'true' && format('{0}/upload-keystore.jks', runner.temp) || '' }}
           VERSION_CODE: ${{ github.run_number }}
-        run: ./gradlew --no-daemon bundleRelease
+        run: ./gradlew --no-daemon bundleRelease assembleRelease
 
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.key.outputs.signed == 'true' && 'coinflip-release-aab' || 'coinflip-UNSIGNED-do-not-upload' }}
           path: app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v7
+        if: steps.key.outputs.signed == 'true'
+        with:
+          name: coinflip-install-on-phone-apk
+          path: app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error

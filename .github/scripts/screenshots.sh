@@ -34,7 +34,7 @@ tap_ui "flip"; sleep 0.6; shot 2-mid-flip
 sleep 2.5
 shot 3-result-with-stats
 
-tap_ui "settings" 1000 140; sleep 2
+tap_ui "settings" 1000 140; sleep 4
 shot 4-settings
 tap_ui "silver"; sleep 1
 adb shell input keyevent KEYCODE_BACK; sleep 2

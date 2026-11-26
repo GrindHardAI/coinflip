@@ -59,16 +59,17 @@ fun DrawScope.drawRealCoin(side: Side, metal: Metal, label: String) {
 
     // 1. Outer edge with fine ridges (reeded edge)
     drawCircle(
-        brush = Brush.sweepGradient(
-            listOf(metal.light, metal.dark, metal.base, metal.deep, metal.light, metal.dark, metal.light),
-            center = c,
+        brush = Brush.linearGradient(
+            listOf(metal.light, metal.dark, metal.base, metal.deep),
+            start = Offset(c.x - r, c.y - r),
+            end = Offset(c.x + r, c.y + r),
         ),
         radius = r,
     )
     val ridges = 150
     val ridgeWidth = (r * 0.011f).coerceAtLeast(1f)
     for (i in 0 until ridges) {
-        val a = (i * 2 * PI / ridges).toFloat()
+        val a = ((i + 0.5) * 2 * PI / ridges).toFloat()
         drawLine(
             color = metal.deep.copy(alpha = 0.5f),
             start = Offset(c.x + cos(a) * r * 0.935f, c.y + sin(a) * r * 0.935f),

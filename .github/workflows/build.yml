@@ -54,7 +54,6 @@ jobs:
             echo "::error::KEY_ALIAS secret is wrong. It should be exactly: upload"; exit 1
           fi
           echo "Signing secrets look correct."
-          fi
 
       - name: Run unit tests
         run: ./gradlew --no-daemon test

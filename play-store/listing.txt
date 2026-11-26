@@ -1,0 +1,45 @@
+APP NAME (max 30)
+Coin Flip
+
+SHORT DESCRIPTION (max 80)
+Flip a fair coin with a realistic 3D animation and track your streaks.
+
+FULL DESCRIPTION (max 4000)
+Need to make a quick decision? Settle it with a coin flip.
+
+Coin Flip gives you a fair, 50/50 coin toss with a smooth 3D flip animation and a satisfying buzz when it lands. Tap the coin or the Flip button and watch it spin.
+
+FEATURES
+• Fair results: every flip uses a secure random number generator
+• Realistic 3D flip-and-toss animation with haptic feedback
+• Live stats: heads and tails counts with percentages
+• Current streak and longest streak tracking
+• History of your last 30 flips
+• Light and dark mode, with colors that match your phone (Android 12+)
+• Reset your stats anytime
+
+PRIVATE BY DESIGN
+No ads. No accounts. No internet access. Your stats stay on your phone.
+
+Great for settling arguments, picking who goes first, making decisions, or just testing your luck.
+
+CATEGORY
+Tools  (or Entertainment)
+
+TAGS / KEYWORDS TO KEEP IN MIND
+coin flip, coin toss, heads or tails, decision maker, random
+
+CONTACT EMAIL
+grindhardbusiness01@gmail.com
+
+PRIVACY POLICY URL
+https://grindhardai.github.io/coinflip/privacy.html
+
+---- APP CONTENT ANSWERS ----
+Ads: No
+Data safety: Does your app collect or share any of the required user data types? -> No
+  (Data is encrypted in transit / deletion request questions are skipped when nothing is collected)
+Content rating questionnaire: category "All other app types"; answer No to every content question -> rated Everyone / PEGI 3
+Target audience: 13+ (avoid selecting under-13 age groups unless you want Families policy review)
+App access: All functionality is available without special access
+Government app: No   Financial features: None   Health: No   News app: No

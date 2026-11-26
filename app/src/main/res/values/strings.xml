@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Coin Flip</string>
+    <string name="heads">Heads</string>
+    <string name="tails">Tails</string>
+    <string name="heads_short">H</string>
+    <string name="tails_short">T</string>
+    <string name="flip">Flip</string>
+    <string name="flipping">Flipping…</string>
+    <string name="tap_to_flip">Tap the coin to flip</string>
+    <string name="result">%1$s!</string>
+    <string name="coin_description">Coin showing %1$s. Double tap to flip.</string>
+    <string name="total">Total</string>
+    <string name="percent">%1$d%%</string>
+    <string name="streak">Current streak</string>
+    <string name="streak_value">%1$d × %2$s</string>
+    <string name="longest_streak">Longest streak</string>
+    <string name="history">Recent flips</string>
+    <string name="no_history">No flips yet</string>
+    <string name="reset">Reset</string>
+    <string name="reset_title">Reset statistics?</string>
+    <string name="reset_message">All counts, streaks and history will be cleared.</string>
+    <string name="cancel">Cancel</string>
+</resources>

@@ -55,6 +55,7 @@ jobs:
       - name: Save screenshots into the repo (play-store/screenshots)
         run: |
           mkdir -p play-store/screenshots
+          rm -f play-store/screenshots/*.png
           cp screenshots/*.png play-store/screenshots/
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

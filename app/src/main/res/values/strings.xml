@@ -2,11 +2,12 @@
     <string name="app_name">Coin Flip</string>
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>
-    <string name="heads_short">H</string>
-    <string name="tails_short">T</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="flip">Flip</string>
     <string name="flipping">Flipping…</string>
     <string name="tap_to_flip">Tap the coin to flip</string>
+    <string name="shake_hint">or shake your phone</string>
     <string name="result">%1$s!</string>
     <string name="coin_description">Coin showing %1$s. Double tap to flip.</string>
     <string name="total">Total</string>
@@ -20,4 +21,23 @@
     <string name="reset_title">Reset statistics?</string>
     <string name="reset_message">All counts, streaks and history will be cleared.</string>
     <string name="cancel">Cancel</string>
+
+    <string name="settings">Settings</string>
+    <string name="coin_style">Coin</string>
+    <string name="skin_gold">Gold</string>
+    <string name="skin_silver">Silver</string>
+    <string name="skin_bronze">Bronze</string>
+    <string name="skin_rose">Rose gold</string>
+    <string name="labels">Sides</string>
+    <string name="labels_heads_tails">Heads / Tails</string>
+    <string name="labels_yes_no">Yes / No</string>
+    <string name="labels_custom">Custom</string>
+    <string name="heads_side">Heads side</string>
+    <string name="tails_side">Tails side</string>
+    <string name="custom_hint">e.g. Pizza</string>
+    <string name="sound_effects">Sound effects</string>
+    <string name="sound_effects_sub">Ting when it flips, clink when it lands</string>
+    <string name="shake_to_flip">Shake to flip</string>
+    <string name="shake_to_flip_sub">Shake your phone to flip the coin</string>
+    <string name="done">Done</string>
 </resources>
